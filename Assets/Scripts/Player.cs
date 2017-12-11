@@ -13,11 +13,13 @@ public class Player : MonoBehaviour
     bool faceRight = true;
 
     Rigidbody rb;
+    Animator animator;
     Vector3 inputDirectionVelosity;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        animator = GetComponentInChildren<Animator>();
     }
 
     void FixedUpdate()
@@ -33,6 +35,10 @@ public class Player : MonoBehaviour
         var inputVerticalVelosity = Input.GetAxis("Vertical") * speed * Time.fixedDeltaTime;
         inputDirectionVelosity = new Vector3(inputHorizontalVelosity, inputVerticalVelosity, 0);
         rb.MovePosition(transform.position + inputDirectionVelosity);
+        if (inputHorizontalVelosity > 0 || inputHorizontalVelosity < 0)
+            animator.SetBool("Run", true);
+        else
+            animator.SetBool("Run", false);
     }
 
     void FaceAhead()
@@ -52,12 +58,16 @@ public class Player : MonoBehaviour
     void Jump()
     {
         if (Input.GetButtonDown("Jump") && IsGrounded())
+        {
+            animator.SetTrigger("Jump");
             rb.AddForce(Vector3.up * jumpforse, ForceMode.Impulse);
+        }
+            
     }
 
     bool IsGrounded()
     {
-        var hit = Physics.Raycast(transform.position, Vector3.down, 0.5f, layer);
+        var hit = Physics.Raycast(transform.position, Vector3.down, 1.45f, layer);
         if (hit)
             return true;
         return false;
