@@ -10,17 +10,10 @@ public class Platform : MonoBehaviour
 
     Vector3 current;
 
-    // Use this for initialization
     void Start()
     {
         current = platform.transform.position;
         Spawn();
-    }
-	
-    // Update is called once per frame
-    void Update()
-    {
-		
     }
 
     void Spawn()
@@ -29,6 +22,7 @@ public class Platform : MonoBehaviour
         {
             var thisPlatform = Instantiate(platform)as GameObject;
             thisPlatform.transform.parent = transform;
+            //Range number taken without  calculation
             thisPlatform.transform.position = new Vector2(current.x + Random.Range(8, 17), current.y + Random.Range(-4, 8));
             thisPlatform.transform.rotation = Quaternion.identity;
             current = thisPlatform.transform.position;

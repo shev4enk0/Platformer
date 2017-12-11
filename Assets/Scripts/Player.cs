@@ -5,31 +5,26 @@ using UnityEditor;
 
 public class Player : MonoBehaviour
 {
-    public float speed = 10, jumpforse = 50;
+    public float speed = 10, jumpforse = 5;
+
+    //select Ground and attach to the Platform
     public LayerMask layer;
 
     bool faceRight = true;
 
     Rigidbody rb;
     Vector3 inputDirectionVelosity;
-    Vector3 offsetCamera;
-
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        offsetCamera = transform.position - Camera.main.transform.position;
     }
-
 
     void FixedUpdate()
     {
-        if (IsGrounded())
-        {
-            FaceAhead();
-            Move();
-            Jump();
-        }
+        FaceAhead();
+        Move();
+        Jump();
     }
 
     void Move()
@@ -44,7 +39,6 @@ public class Player : MonoBehaviour
     {
         if (inputDirectionVelosity.x > 0 && !faceRight)
         {
-           
             transform.rotation = Quaternion.Euler(0, 0, 0);
             faceRight = !faceRight;
         }
@@ -57,26 +51,15 @@ public class Player : MonoBehaviour
 
     void Jump()
     {
-        if (Input.GetButtonDown("Jump"))
-        {
+        if (Input.GetButtonDown("Jump") && IsGrounded())
             rb.AddForce(Vector3.up * jumpforse, ForceMode.Impulse);
-        }
-
     }
 
     bool IsGrounded()
     {
         var hit = Physics.Raycast(transform.position, Vector3.down, 0.5f, layer);
         if (hit)
-        {
             return true;
-        }
-            
         return false;
-    }
-
-    void MoveCamera()
-    {
-        Camera.main.transform.position = transform.position + offsetCamera;
     }
 }
