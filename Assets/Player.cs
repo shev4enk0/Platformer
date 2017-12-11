@@ -8,7 +8,10 @@ public class Player : MonoBehaviour
     public float speed = 10, jumpforse = 50;
     public LayerMask layer;
 
+    bool faceRight = true;
+
     Rigidbody rb;
+    Vector3 inputDirectionVelosity;
 
 
     void Awake()
@@ -21,6 +24,7 @@ public class Player : MonoBehaviour
     {
         if (IsGrounded())
         {
+            FaceAhead();
             Move();
             Jump();
         }
@@ -30,8 +34,23 @@ public class Player : MonoBehaviour
     {
         var inputHorizontalVelosity = Input.GetAxis("Horizontal") * speed * Time.fixedDeltaTime;
         var inputVerticalVelosity = Input.GetAxis("Vertical") * speed * Time.fixedDeltaTime;
-        var inputDirectionVelosity = new Vector3(inputHorizontalVelosity, inputVerticalVelosity, 0);
+        inputDirectionVelosity = new Vector3(inputHorizontalVelosity, inputVerticalVelosity, 0);
         rb.MovePosition(transform.position + inputDirectionVelosity);
+    }
+
+    void FaceAhead()
+    {
+        if (inputDirectionVelosity.x > 0 && !faceRight)
+        {
+           
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+            faceRight = !faceRight;
+        }
+        else if (inputDirectionVelosity.x < 0 && faceRight)
+        {
+            transform.rotation = Quaternion.Euler(0, 180, 0);
+            faceRight = !faceRight;
+        }
     }
 
     void Jump()
