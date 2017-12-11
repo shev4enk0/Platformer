@@ -12,11 +12,13 @@ public class Player : MonoBehaviour
 
     Rigidbody rb;
     Vector3 inputDirectionVelosity;
+    Vector3 offsetCamera;
 
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        offsetCamera = transform.position - Camera.main.transform.position;
     }
 
 
@@ -71,5 +73,10 @@ public class Player : MonoBehaviour
         }
             
         return false;
+    }
+
+    void MoveCamera()
+    {
+        Camera.main.transform.position = transform.position + offsetCamera;
     }
 }
