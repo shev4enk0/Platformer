@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraTracking : MonoBehaviour
 {
-    public Player player;
+    public PlayerController player;
 
     Vector3 offset;
 
